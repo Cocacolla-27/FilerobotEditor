@@ -18,23 +18,23 @@ export default class extends Component {
   render() {
     const { activeTab, isShowSpinner, activeBody, config } = this.props;
     const { tools } = config;
-
+    console.log("toolbarProps: ", this.props)
     return (
       <Toolbar overlayYHidden={activeTab !== 'watermark'}>
-        {!activeTab && tools.map(name => <Tool name={name} key={name} {...this.props}/>)}
-        {activeTab === 'adjust' && <Adjust {...this.props}/>}
-        {activeTab === 'effects' && <Effects {...this.props}/>}
-        {activeTab === 'filters' && <Filters {...this.props}/>}
-        {activeTab === 'rotate' && <Orientation {...this.props}/>}
-        {activeTab === 'crop' && <Crop {...this.props}/>}
-        {activeTab === 'resize' && <Resize {...this.props}/>}
-        {activeTab === 'watermark' && <Watermark {...this.props}/>}
-        {activeTab === 'focus_point' && <FocusPoint {...this.props}/>}
-        {activeTab === 'shapes' && <Shapes {...this.props}/>}
-        {activeTab === 'image' && <Image {...this.props}/>}
-        {activeTab === 'text' && <Text {...this.props}/>}
-        {(isShowSpinner) && <NoClickOverlay/>}
-        {activeBody !== 'preview' && <NoClickToolbar/>}
+        {!activeTab && tools.map(name => <Tool name={name} key={name} {...this.props} />)}
+        {activeTab === 'adjust' && <Adjust {...this.props} />}
+        {activeTab === 'effects' && <Effects {...this.props} />}
+        {activeTab === 'filters' && <Filters {...this.props} />}
+        {activeTab === 'rotate' && <Orientation {...this.props} />}
+        {activeTab === 'crop' && <Crop {...this.props} />}
+        {activeTab === 'resize' && <Resize {...this.props} />}
+        {activeTab === 'watermark' && <Watermark {...this.props} />}
+        {activeTab === 'focus_point' && <FocusPoint {...this.props} />}
+        {activeTab === 'shapes' && <Shapes {...this.props} />}
+        {activeTab === 'image' && <Image {...this.props} />}
+        {activeTab === 'text' && <Text {...this.props} />}
+        {(isShowSpinner) && <NoClickOverlay />}
+        {activeBody !== 'preview' && <NoClickToolbar />}
       </Toolbar>
     )
   }

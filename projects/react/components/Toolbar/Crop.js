@@ -17,21 +17,23 @@ export default class extends Component {
   changeWidth = (event) => {
     const { initialZoom } = this.props;
 
-    window.scaleflexPlugins.cropperjs.setCropBoxData({ width: +event.target.value / initialZoom / window.scaleflexPlugins.zoom  });
+    window.scaleflexPlugins.cropperjs.setCropBoxData({ width: +event.target.value / initialZoom / window.scaleflexPlugins.zoom });
   }
 
 
   changeHeight = (event) => {
     const { initialZoom } = this.props;
 
-    window.scaleflexPlugins.cropperjs.setCropBoxData({ height: +event.target.value / initialZoom / window.scaleflexPlugins.zoom  });
+    window.scaleflexPlugins.cropperjs.setCropBoxData({ height: +event.target.value / initialZoom / window.scaleflexPlugins.zoom });
   }
 
   toggleRatio = (event) => {
     event.preventDefault();
     event.stopPropagation();
     const { cropDetails } = this.props;
+
     const { width, height } = cropDetails;
+    console.log("wdiht : , height  : ", width, height)
     let aspectRatio = this.state.aspectRatio;
     aspectRatio = aspectRatio ? NaN : width / height;
 
@@ -47,13 +49,13 @@ export default class extends Component {
     const { aspectRatio } = this.state;
     const { original: { width = 1, height = 1 }, updateState } = this.props;
     let value;
-
+    console.log("boxValue : ", box)
     if (box.name === 'custom' && !aspectRatio) {
       this.setState({ activeRatio: box.name });
       return;
     }
 
-    updateState({ roundCrop: box.name === 'round' || box.radius === 50 });
+    // updateState({ roundCrop: box.name === 'round' || box.radius === 50 });
     value = box.name === 'original' ? width / height : box.value;
     window.scaleflexPlugins.cropperjs.setAspectRatio(value);
     this.setState({ activeRatio: box.name, aspectRatio: value });
@@ -63,6 +65,8 @@ export default class extends Component {
     const { aspectRatio, activeRatio } = this.state;
     const { cropDetails, original, initialZoom, t, config } = this.props;
     const { cropPresets = [] } = config;
+
+    console.log("croppresets : ", cropPresets);
 
     return (
       <CropWrapper>
@@ -78,7 +82,7 @@ export default class extends Component {
           </FieldSet>
           <BlockRatioWrapper>
             <BlockRatioBtn active={aspectRatio} link onClick={this.toggleRatio}>
-              <BlockRatioIcon active={aspectRatio}/>
+              <BlockRatioIcon active={aspectRatio} />
             </BlockRatioBtn>
           </BlockRatioWrapper>
           <FieldSet>
@@ -95,6 +99,7 @@ export default class extends Component {
 
         <PresetsWrapper>
           {cropPresets.map(box => (
+
             <CropBox
               active={activeRatio === box.name}
               onClick={() => { this.changeRatio(box); }}
@@ -102,7 +107,7 @@ export default class extends Component {
             >
               <CropBoxInner>
                 <CropShapeWrapper>
-                  <ShapeAligner/>
+                  <ShapeAligner />
                   <CropShape ratio={box.value || original.width / original.height} radius={box.radius} />
                 </CropShapeWrapper>
                 <CropLabel>

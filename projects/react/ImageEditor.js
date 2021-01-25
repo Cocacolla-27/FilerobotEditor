@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { PreviewWrapper, Spinner, Wrapper } from './styledComponents/index';
-import { Footer, Header, PreResize, Preview } from './components/index';
+import { Footer, Header, PreResize, Preview, Dropzone } from './components/index';
 import imageType from 'image-type';
 import './lib/caman';
 import { DEFAULT_WATERMARK, ON_CLOSE_STATUSES } from './config';
@@ -66,10 +66,11 @@ export default class extends Component {
 
       ...INITIAL_PARAMS,
       watermark: watermark || DEFAULT_WATERMARK,
-      focusPoint: {x: null, y: null},
+      focusPoint: { x: null, y: null },
       shapes: [],
       selectedShape: {},
-      availableShapes: []
+      availableShapes: [],
+      activeDrop: true
     }
   }
 
@@ -104,7 +105,7 @@ export default class extends Component {
     img.src = src;
     if (!src.startsWith('data:image/') && !src.startsWith('blob:')) {
       // Image is not a blob, insert query param to avoid caching
-      img.src = img.src + (img.src.indexOf('?') > -1 ? '&version='  : '?version=') + new Date().getTime();
+      img.src = img.src + (img.src.indexOf('?') > -1 ? '&version=' : '?version=') + new Date().getTime();
     }
 
     img.onload = () => {
@@ -180,7 +181,7 @@ export default class extends Component {
     xhr.send();
   }
 
-  updateState = (props, callback = () => {}) => {
+  updateState = (props, callback = () => { }) => {
     if (this._isMounted) {
       const editorWrapperId = this.props.config.elementId;
       const canvas = getCanvasNode(editorWrapperId);
@@ -294,7 +295,7 @@ export default class extends Component {
     this.setState({ activeTab: null });
   }
 
-  redoOperation = ({ operationIndex, callback = () => {}, resetActiveTab = true, operationObject = {} }) => {
+  redoOperation = ({ operationIndex, callback = () => { }, resetActiveTab = true, operationObject = {} }) => {
     const { applyOperations } = this.state;
 
     if (resetActiveTab) {
@@ -375,12 +376,15 @@ export default class extends Component {
       shapeOperations,
       selectedShape,
       availableShapes,
-      latestCanvasSize
+      latestCanvasSize,
+      activeDrop
     } = this.state;
     const { src, config, onClose, onComplete, closeOnLoad = true, t = {}, theme } = this.props;
+
+    console.log("src : ", src)
     const imageParams = { effect, filter, crop, resize, rotate, flipX, flipY, adjust, correctionDegree };
 
- 
+
     const headerProps = {
       t,
       theme,
@@ -497,15 +501,16 @@ export default class extends Component {
     return (
       <Wrapper roundCrop={roundCrop} isLoading={isShowSpinner}>
 
-        <Header {...headerProps}/>
+        <Header {...headerProps} />
 
         <PreviewWrapper>
-          {activeBody === 'preview' && <Preview {...previewProps}/>}
-          {activeBody === 'preResize' && <PreResize {...previewProps}/>}
+          {activeDrop && <Dropzone />}
+          {activeBody === 'preview' && <Preview {...previewProps} />}
+          {activeBody === 'preResize' && <PreResize {...previewProps} />}
 
-          <Spinner overlay show={isShowSpinner} label={t['spinner.label']}/>
+          <Spinner overlay show={isShowSpinner} label={t['spinner.label']} />
         </PreviewWrapper>
-        <Footer {...footerProps}/>
+        <Footer {...footerProps} />
 
       </Wrapper>
     )

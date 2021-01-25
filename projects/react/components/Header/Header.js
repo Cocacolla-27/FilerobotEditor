@@ -44,14 +44,14 @@ export default class extends Component {
               {!activeTab || activeTab === 'resize' ? onFinishButtonLabel : t['toolbar.apply']}
             </Button>
           </ButtonsWrapper>
-          
+
           <CloseBtn onClick={onClose} title={t[`header.close_modal`]} {...closeButtonProps}>
             {!closeButtonProps?.noLabel && (closeButtonProps?.label || t['header.close'])}
           </CloseBtn>
         </HeaderTop>
 
         <ToolbarWrapper overlayYHidden={activeTab !== 'watermark'}>
-          <Toolbar {...this.props}/>
+          <Toolbar {...this.props} />
         </ToolbarWrapper>
       </HeaderWrapper>
     )
